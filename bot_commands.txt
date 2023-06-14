@@ -1,0 +1,6 @@
+start - Create account
+add - search query ("/add arturia keylab -88")
+list - all queries
+remove - query by index ("/remove 0")
+clear - all queries
+stop - Remove account
