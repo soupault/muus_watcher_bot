@@ -1,0 +1,11 @@
+name: muus_watcher
+channels:
+  - defaults
+dependencies:
+  - pip
+  - pip:
+    - requests
+    - python-telegram-bot[job-queue]
+    - loguru
+    - omegaconf
+    - beautifulsoup4
