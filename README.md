@@ -13,19 +13,31 @@ User interface in Telegram:
   - Set the bot picture: select `Edit Botpic` and upload the provided `bot_pic.png`
   - Configure the user interface: select `Edit Commands` and paste the contents of `bot_commands.txt`
 ### 2. Configure the server
+#### Python version:
 - Install [miniconda](https://docs.conda.io/projects/miniconda/en/latest/)
 - Create a conda environment: `conda env create -f environment.yml`
 - In `main.py`:
   - Specify your bot token in `TG_BOT_TOKEN = ""`
   - (optional) Configure the update interval, i.e. how often to fetch the listings - `QUERY_EXEC_INTERVAL` (1 hour by default)
+#### Rust version:
+- In `src/main.rs`:
+  - Specify your bot token in `const TG_BOT_TOKEN: &str = "";`
+  - (optional) Configure the update interval, i.e. how often to fetch the listings - `QUERY_COOLDOWN_INTERVAL` (1 hour by default)
 
 ## Usage
 ### 1. Start the server
+#### Python version:
 ```bash
 conda activate muus_watcher
 python main.py
 ```
 The server saves its state to `db.yaml` and restores it on restart.
+#### Rust version:
+```bash
+cargo run 
+```
+The server saves its state to `db.json` and restores it on restart.
+
 
 ### 2. Configure listing search of your interest
 - In Telegram, open a chat with `@{your_bot_name}`
@@ -34,8 +46,8 @@ The server saves its state to `db.yaml` and restores it on restart.
 - Inspect `/list` and remove queries (`/remove _`, `/clear`) as need.
 
 ## Limitations
-- The server currently considers only the first page of query search results returned by https://muusikoiden.net/ . This means that if there are more 1 page of new listings added during the update interval, the earliest ones will not be reported in Telegram.
-- The server reports the listings that were added or modified since the previous query search. Practically, this often results in repeated notifications if the seller edits their listing.
+- The server currently considers only the _first page of query search results_ returned by https://muusikoiden.net/ . This means that if there are more 1 page of new listings added during the update interval, the earliest ones will not be reported in Telegram.
+- The server reports the listings that were _added or modified_ since the previous query search. Practically, this often results in repeated notifications if the seller edits their listing.
 
 ## License
 
