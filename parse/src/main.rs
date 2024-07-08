@@ -3,15 +3,15 @@ use select::document::Document;
 use select::predicate::Attr;
 use regex::Regex;
 use chrono::prelude::*;
-use url::form_urlencoded;
-
+use reqwest;
+use serde;
 
 #[derive(Clone)]
 pub(crate) struct MuusSearch {
-    pub user_id: String,
-    pub chat_id: i64,
     pub uniq_id: u64,
     pub text: String,
+    pub user_id: String,
+    pub chat_id: i64,
     pub dtime_req: DateTime<Utc>,
 }
 
@@ -77,18 +77,15 @@ fn page_to_listings(document: Document) -> Vec<MuusListing> {
     return listings;
 }
 
-pub(crate) fn search_muus_market(search: MuusSearch) -> Result<Vec<MuusListing>, Box<dyn std::error::Error>> {
+fn search_muus_market() {
     let mut listings: Vec<MuusListing> = Vec::new();
 
     // First page of the results
     let client = reqwest::blocking::Client::new();
-    // Encoding is needed to handle "+" correctly
-    let text_enc: String = form_urlencoded::byte_serialize(search.text.as_bytes()).collect();
-    let query_init = [("keyword", text_enc)];
+    let query_init = [("keyword", "elektron".to_string())];
     let resp: String = client.post("https://muusikoiden.net/tori/haku.php")
         .query(&query_init).send().unwrap()  // TODO: should handle potential errors here better
         .text().unwrap();
-    println!("{resp:?}");
 
     let mut resp_str = resp.to_string();
     let mut page = Document::from(resp_str.as_str());
@@ -129,5 +126,9 @@ pub(crate) fn search_muus_market(search: MuusSearch) -> Result<Vec<MuusListing>,
 
     listings = listings.into_iter().rev().collect();  // Sort in chronological order
     // println!("Listings found: {}", listings.iter().count());
-    return Ok(listings)
+}
+
+fn main() {
+    search_muus_market();
+    println!("Hello, world!");
 }

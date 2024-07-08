@@ -46,7 +46,7 @@ The server saves its state to `db.json` and restores it on restart.
 - Inspect `/list` and remove queries (`/remove _`, `/clear`) as need.
 
 ## Limitations
-- The server currently considers only the _first page of query search results_ returned by https://muusikoiden.net/ . This means that if there are more 1 page of new listings added during the update interval, the earliest ones will not be reported in Telegram.
+- [python-only] The server currently considers only the _first page of query search results_ returned by https://muusikoiden.net/ . This means that if there are more 1 page of new listings added during the update interval, the earliest ones will not be reported in Telegram.
 - The server reports the listings that were _added or modified_ since the previous query search. Practically, this often results in repeated notifications if the seller edits their listing.
 
 ## License
